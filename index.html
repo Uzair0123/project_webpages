@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0c0a09">
+    <meta name="description" content="حكايتنا — حكاية حبّ سينمائية تفاعلية">
+    <title>حكايتنا</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23c8a15e' d='M16 28C8 21 3 16.5 3 11a6.5 6.5 0 0 1 13-2 6.5 6.5 0 0 1 13 2c0 5.5-5 10-13 17z'/%3E%3C/svg%3E">
+
+    <!--
+════════════════════════════════════════════════════════════
+  حكايتنا — رسالة حبّ تفاعلية
+  ▸ خصّص كل شيء من ملف  js/main.js  (قسم CONFIG في أعلى الملف)
+  ▸ ضع صورك الخمس في  assets/images/  بنفس الأسماء
+  ▸ ضع الأغنية في  assets/music/love-song.mp3
+════════════════════════════════════════════════════════════
+-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <noscript><p style="padding:2rem;text-align:center">هذه الحكاية تحتاج إلى تفعيل JavaScript لتُروى كما يجب.</p></noscript>
+
+    <!-- ══════════ شاشة التحميل السينمائية ══════════ -->
+    <div id="loader" role="status" aria-label="جارٍ التحميل">
+        <div class="loader-inner">
+            <span class="loader-mark">ح</span>
+            <span class="loader-word">حكايتنا</span>
+            <span class="loader-bar"><i id="loadFill"></i></span>
+            <span class="loader-note">لحظات… ويُفتح الستار</span>
+        </div>
+    </div>
+
+    <!-- ══════════ غبار الضوء (جسيمات) ══════════ -->
+    <canvas id="dust" aria-hidden="true"></canvas>
+
+    <!-- ══════════ الشريط العلوي: الشعار + الموسيقى ══════════ -->
+    <header id="topbar">
+        <button id="wordmark" title="العودة إلى الافتتاح" aria-label="العودة إلى الافتتاح">حكايتنا</button>
+        <button id="musicBtn" aria-pressed="false" aria-label="تشغيل الموسيقى أو إيقافها" title="الموسيقى">
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="visually-hidden">الموسيقى</span>
+  </button>
+    </header>
+
+    <!-- ══════════ سكة الفصول (تنقّل) ══════════ -->
+    <nav id="rail" aria-label="فصول الحكاية"></nav>
+    <div id="topProgress" aria-hidden="true"></div>
+
+    <!-- ══════════ زر المتابعة ══════════ -->
+    <button id="nextBtn" aria-label="الفصل التالي">
+  <span class="next-label" id="nextLabel"></span>
+  <span class="next-line" aria-hidden="true"><i></i></span>
+</button>
+
+    <p id="hint" aria-hidden="true"></p>
+
+    <!-- ══════════════════════════════════════════════
+     فصول الحكاية
+═══════════════════════════════════════════════ -->
+    <main id="deck">
+
+        <!-- ────────── ٠١ · الافتتاح ────────── -->
+        <section class="scene" id="scene-intro" aria-label="الافتتاح">
+            <div class="scene-scroll">
+                <div class="scene-inner intro-inner">
+                    <div class="op-glow" aria-hidden="true"></div>
+
+                    <div class="op-stage" aria-live="polite">
+                        <p class="op-line serif" data-op="1">هناك حكايات تبدأ صدفة...</p>
+                        <p class="op-line serif" data-op="2">وحكايات تبدأ بنظرة...</p>
+                        <p class="op-line serif" data-op="3">لكن أجمل الحكايات...</p>
+                        <p class="op-line serif" data-op="4">هي التي تبدأ بك.</p>
+                    </div>
+
+                    <div class="op-title-wrap">
+                        <span class="orn op-orn" aria-hidden="true"></span>
+                        <h1 class="op-title">حكايتنا</h1>
+                        <p class="op-names serif">حكاية <span data-name1>…</span> و<span data-name2>…</span></p>
+                    </div>
+
+                    <div class="op-cta">
+                        <p class="op-hint">اضغط لبدء الحكاية</p>
+                        <button id="btnStart" class="btn btn-start magnetic">ابدأ</button>
+                    </div>
+
+                    <button id="opSkip" class="op-skip">تخطّي المقدمة</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٢ · البداية ────────── -->
+        <section class="scene" id="scene-beginning" aria-label="البداية">
+            <div class="scene-scroll">
+                <div class="scene-inner beg-inner">
+                    <div class="beg-text">
+                        <p class="chapter-tag" data-reveal><span>الفصل ٠١</span></p>
+                        <h2 class="scene-title serif" data-reveal>البداية</h2>
+                        <p class="scene-sub serif" data-reveal>لكل قصة جميلة لحظة أولى… وقصتنا بدأت على غير موعد.</p>
+                        <p class="beg-para" data-reveal id="openingText"></p>
+                        <div class="beg-chips" data-reveal>
+                            <span class="chip"><i class="chip-dot"></i> منذ ذلك اليوم — <b id="dateChip"></b></span>
+                        </div>
+                        <p class="beg-days serif" data-reveal id="daysLine"></p>
+                    </div>
+                    <figure class="beg-media" data-reveal="scale">
+                        <span class="frame"><img id="beginImg" alt="أول صورة من حكايتنا" decoding="async"></span>
+                        <figcaption class="beg-cap serif">حيث بدأ كل شيء</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٣ · رحلتنا (الخط الزمني) ────────── -->
+        <section class="scene" id="scene-journey" aria-label="رحلتنا">
+            <div class="scene-scroll" id="journeyScroll">
+                <div class="scene-inner tl-wrap">
+                    <header class="scene-head">
+                        <p class="chapter-tag" data-reveal><span>الفصل ٠٢</span></p>
+                        <h2 class="scene-title serif" data-reveal>رحلتنا</h2>
+                        <p class="scene-sub serif" data-reveal>محطات صغيرة… صنعت حكاية كبيرة.</p>
+                    </header>
+                    <div class="tl">
+                        <span class="tl-rail" aria-hidden="true"></span>
+                        <span class="tl-glow" id="tlGlow" aria-hidden="true"></span>
+                        <ol class="tl-list" id="tlList"></ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٤ · ذكرياتنا (المعرض) ────────── -->
+        <section class="scene" id="scene-gallery" aria-label="ذكرياتنا">
+            <div class="scene-scroll">
+                <div class="scene-inner gal-wrap">
+                    <header class="scene-head">
+                        <p class="chapter-tag" data-reveal><span>الفصل ٠٣</span></p>
+                        <h2 class="scene-title serif" data-reveal>ذكرياتنا</h2>
+                        <p class="scene-sub serif" data-reveal>خمس لحظات صغيرة، أهرب إليها كلما اشتقت إليك.</p>
+                    </header>
+                    <div class="mem-stage" id="memStage" data-reveal></div>
+                    <p class="gal-hint" data-reveal>اضغط على أي ذكرى لتراها عن قرب</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٥ · لماذا أحبك؟ ────────── -->
+        <section class="scene" id="scene-reasons" aria-label="لماذا أحبك">
+            <div class="scene-scroll">
+                <div class="scene-inner reasons-inner" id="reasonStage">
+                    <p class="chapter-tag" data-reveal><span>الفصل ٠٤</span></p>
+                    <h2 class="scene-title serif" data-reveal>لماذا أحبّك؟</h2>
+                    <span class="orn" data-reveal aria-hidden="true"></span>
+                    <div class="reason-stage" aria-live="polite">
+                        <p class="reason-line serif" id="reasonLine"></p>
+                    </div>
+                    <div class="reason-dots" id="reasonDots" aria-hidden="true"></div>
+                    <p class="reason-tap" data-reveal>اضغط في أي مكان للمتابعة</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٦ · الرسالة ────────── -->
+        <section class="scene" id="scene-letter" aria-label="الرسالة">
+            <div class="scene-scroll">
+                <div class="scene-inner letter-wrap">
+                    <p class="chapter-tag" data-reveal><span>الفصل ٠٥</span></p>
+                    <article class="paper" data-reveal="scale">
+                        <span class="seal" aria-hidden="true">ح</span>
+                        <h2 class="paper-opening serif" id="letterOpening"></h2>
+                        <div class="paper-body" id="letterBody"></div>
+                        <footer class="paper-sign">
+                            <span class="sign-name serif" id="letterSign"></span>
+                            <svg class="sign-line" viewBox="0 0 160 12" aria-hidden="true">
+              <path d="M3 8 C 40 2, 90 11, 157 4" pathLength="1"/>
+            </svg>
+                            <time class="sign-date" id="letterDate"></time>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٧ · الآتي ────────── -->
+        <section class="scene" id="scene-future" aria-label="الآتي">
+            <div class="scene-scroll">
+                <div class="scene-inner future-wrap">
+                    <p class="chapter-tag" data-reveal><span>الفصل ٠٦</span></p>
+                    <h2 class="scene-title serif" data-reveal>والأجمل لم يأتِ بعد...</h2>
+                    <p class="scene-sub serif" data-reveal style="--d:700ms">هذه ليست نهاية حكايتنا،</p>
+                    <p class="scene-sub serif" data-reveal style="--d:1500ms">بل بداية الفصول التي لم نكتبها بعد.</p>
+
+                    <div class="wish-stage" id="wishStage" data-reveal>
+                        <svg class="wish-lines" id="wishSvg" viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true"></svg>
+                        <!-- تُبنى الأمنيات من JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٨ · السرّ الأخير ────────── -->
+        <section class="scene" id="scene-secret" aria-label="السر الأخير" data-stage="1">
+            <div class="sec-veil" aria-hidden="true"></div>
+            <div class="scene-scroll">
+                <div class="scene-inner secret-inner">
+                    <div class="sec-stage">
+
+                        <div class="sec-step sec-a">
+                            <p class="chapter-tag"><span>الفصل ٠٧</span></p>
+                            <p class="sec-pre serif">قبل أن نصل إلى النهاية…</p>
+                            <button id="secretBtn" class="btn btn-secret magnetic">هناك شيء آخر...</button>
+                        </div>
+
+                        <div class="sec-step sec-b">
+                            <div class="env-wrap">
+                                <button class="envelope" id="envelope" aria-label="افتح رسالتي الأخيرة">
+                <span class="env-back"></span>
+                <span class="env-card"><span class="serif">الرسالة الأخيرة</span></span>
+                <span class="env-flap"></span>
+                <span class="env-seal" aria-hidden="true">ح</span>
+              </button>
+                            </div>
+                            <p class="env-hint serif">افتح رسالتي الأخيرة</p>
+                        </div>
+
+                        <div class="sec-step sec-c">
+                            <div class="sec-msg serif" id="secretLines"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────── ٠٩ · الختام ────────── -->
+        <section class="scene" id="scene-finale" aria-label="الختام">
+            <div class="fin-bg" aria-hidden="true">
+                <img id="finImg" alt="" decoding="async">
+                <span class="fin-veil"></span>
+                <span class="rays"></span>
+            </div>
+            <div class="scene-scroll">
+                <div class="scene-inner fin-inner">
+                    <div class="fin-line-wrap" id="finLine" aria-live="polite"></div>
+                </div>
+            </div>
+            <div class="fin-fade" id="finFade" aria-hidden="true"></div>
+            <div class="fin-outro" id="finOutro">
+                <p class="serif outro-line">أُسدل الستار… مؤقتًا.</p>
+                <p class="outro-ded" id="dedication"></p>
+                <button id="replayBtn" class="btn btn-ghost">إعادة الحكاية من أولها</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ══════════ العارض الكامل (Lightbox) ══════════ -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="عرض الذكرى">
+        <button class="lb-close" id="lbClose" aria-label="إغلاق">✕</button>
+        <button class="lb-nav lb-prev" id="lbPrev" aria-label="السابقة">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+        <figure class="lb-fig" id="lbFig">
+            <img id="lbImg" alt="">
+            <figcaption>
+                <span class="lb-num" id="lbNum"></span>
+                <p class="serif" id="lbCap"></p>
+            </figcaption>
+        </figure>
+        <button class="lb-nav lb-next" id="lbNext" aria-label="التالية">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+    </div>
+
+    <script src="js/animations.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
