@@ -1,0 +1,76 @@
+/* ══════════════════════════════════════════════════════════
+   حكايتنا — الاستجابة لكل الشاشات (Mobile-first polish)
+══════════════════════════════════════════════════════════ */
+
+/* ───────── شاشات متوسطة ───────── */
+@media (max-width:1020px){
+  #rail{display:none}
+  #topProgress{display:block}
+  .beg-inner{grid-template-columns:1fr;gap:2.4rem}
+  .beg-media{order:-1;max-width:480px;margin-inline:auto;width:100%}
+  .beg-text{text-align:center}
+  .beg-para{margin-inline:auto}
+}
+
+/* ───────── الهواتف ───────── */
+@media (max-width:760px){
+  .scene-inner{width:92vw;padding-block:88px}
+
+  /* المعرض: رفّ أفقي قابل للسحب بدل التشتيت */
+  .mem-stage{
+    height:auto;display:flex;gap:5vw;overflow-x:auto;
+    padding:24px 8vw 34px;scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  .mem-stage::-webkit-scrollbar{display:none}
+  .mem-card{
+    position:relative !important;left:auto !important;top:auto !important;
+    width:min(76vw,320px);flex:0 0 auto;scroll-snap-align:center;
+    transform:rotate(0deg);
+  }
+  .mem-card:nth-child(even){transform:rotate(1.4deg)}
+  .mem-card:nth-child(odd){transform:rotate(-1.4deg)}
+  .mem-card.settled:hover{transform:translateY(-6px)}
+
+  /* الخط الزمني: عمود واحد */
+  .tl-rail,.tl-glow{inset-inline-start:11px}
+  .tl-item{grid-template-columns:32px 1fr;gap:0 14px}
+  .tl-dot{grid-column:1;justify-self:start;margin-inline-start:5px}
+  .tl-item:nth-child(odd) .tl-card,
+  .tl-item:nth-child(even) .tl-card{grid-column:2;text-align:start}
+
+  /* كوكبة الآتي تتحول لقائمة عمودية */
+  .wish-stage{height:auto;display:flex;flex-direction:column;align-items:flex-start;gap:1.9rem;
+    padding-inline-start:1.4rem;border-inline-start:1px dashed rgba(200,161,94,.3)}
+  .wish-lines{display:none}
+  .wish{position:static;translate:0 0;display:flex;align-items:center;gap:14px}
+  .wish span{margin-top:0}
+
+  .lb-nav{top:auto;bottom:26px;translate:0 0}
+  .lb-prev{inset-inline-start:26%}
+  .lb-next{inset-inline-end:26%}
+  .lb-fig img{max-height:64vh}
+
+  .op-stage{min-height:6.4em}
+  .reason-stage{min-height:9em}
+  .paper{transform:none}
+}
+
+@media (max-width:400px){
+  .scene-title{font-size:2rem}
+  .btn{padding:.85em 2em}
+  .mem-card{width:82vw}
+}
+
+/* شاشات قصيرة (هواتف أفقية) */
+@media (max-height:600px){
+  .scene-inner{padding-block:70px}
+  .op-title{font-size:clamp(2.6rem,9vh,4rem)}
+  .mem-stage{height:auto;min-height:0}
+  .wish-stage{height:auto}
+}
+
+/* دقة عالية: لا مؤشر مخصص على اللمس — يُخفى عبر JS فقط */
+@media (hover:none){
+  #cursorDot,#cursorGlow{display:none}
+}

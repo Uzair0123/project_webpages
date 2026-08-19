@@ -1,0 +1,83 @@
+/* ══════════════════════════════════════════════════════════
+   حكايتنا — نظام الحركة والكشف
+══════════════════════════════════════════════════════════ */
+
+/* ───────── نظام الكشف العام ───────── */
+[data-reveal]{
+  opacity:0;transform:translateY(28px);filter:blur(8px);
+  transition:opacity .95s var(--ease) var(--d,0ms),
+             transform .95s var(--ease) var(--d,0ms),
+             filter .95s var(--ease) var(--d,0ms);
+}
+[data-reveal="fade"]{transform:none}
+[data-reveal="scale"]{transform:scale(.94) translateY(14px)}
+[data-reveal="start"]{transform:translateX(44px)}   /* يدخل من جهة البداية (يمين في RTL) */
+[data-reveal="end"]{transform:translateX(-44px)}
+[data-reveal].in{opacity:1;transform:none;filter:none}
+
+/* ───────── تسلسل الافتتاح ───────── */
+body.loaded .op-line{animation:opLine 2.5s var(--ease) both}
+body.loaded .op-line[data-op="1"]{animation-delay:.7s}
+body.loaded .op-line[data-op="2"]{animation-delay:2.9s}
+body.loaded .op-line[data-op="3"]{animation-delay:5.1s}
+body.loaded .op-line[data-op="4"]{animation-delay:7.3s}
+body.loaded .op-orn{animation:fadeSoft 1.2s var(--ease) 9.4s both}
+body.loaded .op-title-wrap{animation:riseIn 1.6s var(--ease) 9.7s both}
+body.loaded .op-title{animation:shimmer 7s linear 10.5s infinite}
+body.loaded .op-cta{animation:riseIn 1.3s var(--ease) 10.8s both}
+body.loaded .op-skip{animation:fadeSoft 1s var(--ease) 2s both}
+
+/* تخطّي المقدمة: إظهار الحالة النهائية فورًا */
+body.skipped .op-line{animation:none!important;opacity:0!important}
+body.skipped .op-title-wrap,body.skipped .op-cta{animation:none!important;opacity:1!important;transform:none!important}
+body.skipped .op-orn{animation:none!important;opacity:.85!important}
+body.skipped .op-skip{animation:none!important;opacity:0!important;pointer-events:none}
+
+/* ───────── بطاقات الذكريات ───────── */
+.mem-stage.in .mem-card{animation:memIn 1s var(--ease) both;animation-delay:calc(var(--i) * .15s + .3s)}
+.mem-card.settled{animation:none!important}
+
+/* ───────── Keyframes ───────── */
+@keyframes opLine{
+  0%{opacity:0;filter:blur(14px);transform:translateY(18px) scale(.985)}
+  16%{opacity:1;filter:blur(0);transform:none}
+  74%{opacity:1;transform:none}
+  100%{opacity:0;filter:blur(10px);transform:translateY(-12px)}
+}
+@keyframes riseIn{from{opacity:0;transform:translateY(36px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+@keyframes fadeSoft{from{opacity:0}to{opacity:1}}
+@keyframes shimmer{to{background-position:200% center}}
+@keyframes memIn{
+  from{opacity:0;transform:translateY(72px) rotate(calc(var(--r) * 1.6)) scale(.9);filter:blur(8px)}
+  to{opacity:1;transform:translateY(0) rotate(var(--r)) scale(1);filter:none}
+}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.09) translate(1.4%,-1.2%)}}
+@keyframes kbSlow{from{transform:scale(1.05)}to{transform:scale(1.17) translate(-1.6%,1%)}}
+@keyframes glowPulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.1)}}
+@keyframes glowText{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes halo{0%{box-shadow:0 0 0 0 rgba(200,161,94,.32)}100%{box-shadow:0 0 0 26px rgba(200,161,94,0)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes twinkle{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+@keyframes raysPulse{from{opacity:.3}to{opacity:.7}}
+@keyframes dotPulse{0%{box-shadow:0 0 0 0 rgba(200,161,94,.45)}75%{box-shadow:0 0 0 11px rgba(200,161,94,0)}100%{box-shadow:0 0 0 0 rgba(200,161,94,0)}}
+@keyframes nextDot{0%{transform:translateY(-14px);opacity:0}30%{opacity:1}100%{transform:translateY(16px);opacity:0}}
+@keyframes eq{0%,100%{transform:scaleY(.28)}50%{transform:scaleY(1)}}
+@keyframes heartBeat{0%,100%{transform:scale(1)}12%{transform:scale(1.18)}24%{transform:scale(1)}}
+
+/* حركة Ken Burns للصور السينمائية */
+.frame img{animation:kb 20s ease-in-out infinite alternate}
+#finImg{animation:kbSlow 28s ease-in-out infinite alternate}
+
+/* ══════════ احترام تفضيل تقليل الحركة ══════════ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.15s!important;
+  }
+  [data-reveal],.reason-line,.s-line,.w-inner{opacity:1!important;transform:none!important;filter:none!important}
+  body.loaded .op-line{animation:none!important;opacity:0!important}
+  body.loaded .op-title-wrap,body.loaded .op-cta,body.loaded .op-orn{animation:none!important;opacity:1!important}
+  .frame img,#finImg{animation:none!important}
+  .mem-stage .mem-card{animation:none!important;opacity:1!important}
+}
